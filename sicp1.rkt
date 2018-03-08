@@ -74,3 +74,27 @@
 ;; This expression ends up with (+ a b) or (- a b) where b < 0
 ;; Thus we are always adding be to a and it is equivalent to
 ;; a + |b|
+
+;; Exercise 1.5  Ben Bitdiddle has invented a test to determine whether the interpreter
+;; he is faced with is using applicative-order evaluation or normal-order evaluation.
+;; He defines the following two procedures:
+
+;;(define (p) (p))
+
+;(define (test x y) 
+;  (if (= x 0) 
+;     0 
+;      y))
+
+
+;; In normal-order evaluation we fully expand and then reduce, where as in applicative-
+;; order evaluation we evaluate the arguments and then apply. Since the first procedure is an
+;; inherently recursive one as it's defined in terms of itself then if we were to use applicative
+;; -order evaluation it would evaluate the arguments of the test procedure. That is, it evaluaties
+;; 0 which equals 0, then it will attempt to evaluate (p). This will end up in an infinite loop
+;; If we use normal-order evaluation it would only evaluate the operands at the time when
+;; it is needed. Thus, it would check the body of the test function, and will produce 0
+;; (p)  will never be evaluated.
+
+
+
