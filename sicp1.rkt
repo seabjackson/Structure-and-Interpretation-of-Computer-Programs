@@ -61,3 +61,16 @@
         ((= z (min x y z)) (sum-square x y))))
 
 (sum-two-larger 3 4 2)
+
+;; Exercise 1.4
+
+;;Observe that our model of evaluation allows for combinations
+;;whose operators are compound expressions. Use this observation
+;;to describe the behavior of the following procedure:
+
+(define (a-plus-abs-b a b)
+  ((if (> b 0) + -) a b))
+
+;; This expression ends up with (+ a b) or (- a b) where b < 0
+;; Thus we are always adding be to a and it is equivalent to
+;; a + |b|
