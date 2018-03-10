@@ -96,5 +96,63 @@
 ;; it is needed. Thus, it would check the body of the test function, and will produce 0
 ;; (p)  will never be evaluated.
 
+(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x) x)))
+
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x)) 0.001))
+
+
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+
+(sqrt 9)
+(sqrt 16)
+(sqrt 36)
+
+;; Exercise 1.6
+
+;; New-If won't work because it is a procedure rather than a special form. In the case of the special form if, it evaluates either one of two expressions based on whether
+;; the predicate is true or false
+
+;; In the case of New-If if we assume that the interpreter under the hood is using applicative-order evaluation then the operands of new if are themselves evaluated.
+;; One of the operands to new-if in this case is the function calling itself with a new guess. This will go on indefinitely and the cond in new-if never gets to be
+;; evaluated.
+
+;; Exercise 1.7
+;; The good-enough? test doesn't work so well for very small numbers, and very larger numbers
+;; In the case for small numbers, numbers like numbers way smaller than our tolerance say, we see from the special case of newton's method Xn+1 = 0.5 * (Xn + a/Xn) that as
+;; a gets small our new guesses also get very small. This means that the difference between successive guesses is smaller. Thus, since we are
+;; not controlling our previous guesses we subtract the square of our guess from x, and return too early because we are within reach of our tolerance limit.
+
+;; For larger numbers the computer is unable to save the succesive new guesses precisely due to memory limitations. This means that our error
+;; in precison when recursed multitudinous times becomes larger. This will end up making our guesses never fitting the criteria for
+;; good-enough? and we will not get an answer as our procedure will recurse indefinitely.
+
+(define (new-sqrt-iter guess last-guess x)
+  (if (new-good-enough? guess last-guess)
+      guess
+      (new-sqrt-iter (improve guess x) guess x)))
+
+(define (new-good-enough? guess last-guess)
+  (< (abs (- guess last-guess)) (* 0.001 guess)))
+
+
+(define (new-sqrt x)
+  (new-sqrt-iter 1.0 2.0 x))
+
+
+(new-sqrt .000009)
+(new-sqrt 90000000000000000000000)
+
+;; This test indeed works better for smaller and larger numbers.
 
 
