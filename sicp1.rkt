@@ -155,4 +155,37 @@
 
 ;; This test indeed works better for smaller and larger numbers.
 
+;; Exercise 1.8
+
+;; Implement Newton's method for cube roots given the fact that  if y is an approximation
+;; to the cube root of x, then a better approximation is given by the value
+;; (x/y^2 + 2y) / 3
+
+
+(define (cube-root-iter guess last-guess x)
+  (if (cube-good-enough? guess last-guess)
+      guess
+      (cube-root-iter (better-guess guess x) guess x)))
+
+;; monitor the guess so that it still works efficiently for large and small numbers
+(define (cube-good-enough? guess last-guess)
+  (< (abs (- guess last-guess)) (* guess 0.001)))
+
+;; better-guess is defined by the formula given above
+(define (better-guess y x)
+  (/
+   (+ (/ x
+          (square y))
+       (* 2 y))
+    3))
+
+(define (cube-rt x)
+  (cube-root-iter 1.0 2.0 x))
+
+(cube-rt 8)
+(cube-rt 27)
+(cube-rt 125)
+(cube-rt 9810)
+
+
 
